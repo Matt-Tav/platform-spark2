@@ -32,7 +32,7 @@
       "framework-arduinospark2": {
       "type": "framework",
       "optional": false,
-      "version": "https://github.com/Matt-Tav/arduino-spark2"
+      "version": "git+https://github.com/Matt-Tav/arduino-spark2.git"
     },
       "framework-arduino-avr": {
       "type": "framework",
