@@ -1,0 +1,63 @@
+{
+  "name": "spark2",
+  "title": "JDLuck Spark 2",
+  "description": "The Spark Mark 2 is an Arduino compatible, all-in-one platform for small robotic applications.",
+  "homepage": "https://github.com/JDLuck/Arduino/tree/master",
+  "license": "Apache-2.0",
+  "keywords": [
+      "dev-platform",
+      "AVR",
+      "Microchip"
+  ],
+  "engines": {
+    "platformio": "^6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Matt-Tav/platform-spark2"
+  },
+  "version": "1.0.0",
+  "frameworks": {
+    "arduino": {
+      "package": "framework-arduinospark2",
+      "script": "builder/frameworks/arduino.py"
+    }
+  },
+  "packages": {
+      "toolchain-atmelavr": {
+      "type": "toolchain",
+      "owner": "platformio",
+      "version": "~1.70300.0"
+    },
+      "framework-arduinospark2": {
+      "type": "framework",
+      "optional": false,
+      "version": "~1.0.0"
+    },
+      "framework-arduino-avr": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~5.2.0"
+    },
+      "framework-arduino-avr-minicore": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~3.0.2"
+    },
+      "tool-avrdude": {
+      "type": "uploader",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.60300.0",
+      "optionalVersions": ["~1.70200.0"]
+    },
+    "tool-simavr": {
+      "type": "debugger",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.10700.0"
+    }
+  }
+}
