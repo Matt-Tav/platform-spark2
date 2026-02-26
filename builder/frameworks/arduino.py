@@ -34,25 +34,6 @@ build_core = board.get("build.core", "")
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinospark2")
 assert isdir(FRAMEWORK_DIR)
 
-
-def get_bootloader_size():
-    upload_protocol = env.subst("$UPLOAD_PROTOCOL")
-    max_size = board.get("upload.maximum_size")
-    if upload_protocol == "urclock":
-        if max_size >= 65536 or board.get("build.mcu").startswith("at90can32"):
-            return 512
-        elif max_size >= 4096:
-            return 384
-        else:
-            return 256
-    elif upload_protocol == "arduino":
-        if max_size >= 65536 or board.get("build.mcu").startswith("at90can32"):
-            return 1024
-        elif max_size > 4096 and max_size <= 32768:
-            return 512
-    return 0
-
-
 CPPDEFINES = [
     ("F_CPU", "$BOARD_F_CPU"),
     "ARDUINO_ARCH_AVR",
@@ -118,40 +99,12 @@ env.Append(
     ]
 )
 
-if build_core in ("MiniCore", "MegaCore", "MightyCore", "MajorCore"):
-    env.Append(
-        CXXFLAGS=[
-            "-std=gnu++17"
-        ],
-    )
-else:
-    env.Append(
-        CXXFLAGS=[
-            "-std=gnu++11"
-        ],
-    )
+env.Append(
+    CXXFLAGS=[
+        "-std=gnu++11"
+    ],
+)
 
-#
-# Take into account bootloader size
-#
-
-if build_core in ("MiniCore", "MegaCore", "MightyCore", "MajorCore", "MicroCore"):
-    upload_section = board.get("upload")
-    upload_section["maximum_size"] -= board.get(
-        "bootloader.size", get_bootloader_size()
-    )
-elif build_core in ("tiny", "tinymodern"):
-    flatten_defines = env.Flatten(env["CPPDEFINES"])
-    extra_defines = []
-    if "CLOCK_SOURCE" not in flatten_defines:
-        extra_defines.append(("CLOCK_SOURCE", board.get("build.clock_source", 0)))
-    if "NEOPIXELPORT" not in flatten_defines:
-        extra_defines.append(
-            ("NEOPIXELPORT", board.get("build.neo_pixel_port", "PORTA"))
-        )
-
-    if extra_defines:
-        env.AppendUnique(CPPDEFINES=extra_defines)
 
 #
 # Target: Build Core Library

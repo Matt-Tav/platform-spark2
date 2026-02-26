@@ -32,7 +32,6 @@ def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
     upload_options = {}
     if "BOARD" in env:
         upload_options = env.BoardConfig().get("upload", {})
-        print(upload_options)
     
     # Deprecated: compatibility with old projects. Use `program` instead
     if "usb" in env.subst("$UPLOAD_PROTOCOL"):
@@ -51,23 +50,6 @@ def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
 
     if upload_options and not upload_options.get("require_upload_port", False):
         return
-
-
-    #env.AutodetectUploadPort()
-    #env.Append(UPLOADERFLAGS=["-P", "$UPLOAD_PORT"])
-
-    #if not upload_options.get("disable_flushing", False) and not env.get(
-    #    "UPLOAD_PORT", ""
-    #).startswith("net:"):
-    #    env.FlushSerialBuffer("$UPLOAD_PORT")
-
-    #before_ports = list_serial_ports()
-
-    #if upload_options.get("use_1200bps_touch", False):
-    #    env.TouchSerialPort("$UPLOAD_PORT", 1200)
-
-    #if upload_options.get("wait_for_upload_port", False):
-    #    env.Replace(UPLOAD_PORT=env.WaitForNewSerialPort(before_ports))
 
     # Capture ports BEFORE reset
     before_ports = list_serial_ports()
@@ -209,22 +191,6 @@ upload_actions = [
 env.AddPlatformTarget("upload", target_firm, upload_actions, "Upload")
 
 #
-# Target: Upload EEPROM data (from EEMEM directive)
-#
-
-env.AddPlatformTarget(
-    "uploadeep",
-    join("$BUILD_DIR", "${PROGNAME}.eep")
-    if "nobuild" in COMMAND_LINE_TARGETS
-    else env.ElfToEep(target_elf),
-    [
-        env.VerboseAction(BeforeUpload, "Looking for upload port..."),
-        env.VerboseAction("$UPLOADEEPCMD", "Uploading $SOURCE"),
-    ],
-    "Upload EEPROM",
-)
-
-#
 # Deprecated target: Upload firmware using external programmer
 #
 
@@ -236,23 +202,6 @@ if "program" in COMMAND_LINE_TARGETS:
         "atmelavr.html#upload-using-programmer\n")
     env.Exit(1)
 
-#
-# Target: Setup fuses
-#
-
-#fuses_action = None
-#if "fuses" in COMMAND_LINE_TARGETS:
-#    fuses_action = env.SConscript("fuses.py", exports="env")
-#env.AddPlatformTarget("fuses", None, fuses_action, "Set Fuses")
-
-#
-# Target: Upload bootloader
-#
-
-#bootloader_actions = None
-#if "bootloader" in COMMAND_LINE_TARGETS:
-#    bootloader_actions = env.SConscript("bootloader.py", exports="env")
-#env.AddPlatformTarget("bootloader", None, bootloader_actions, "Burn Bootloader")
 
 #
 # Setup default targets

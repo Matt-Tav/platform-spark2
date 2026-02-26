@@ -34,30 +34,12 @@
       "optional": false,
       "version": "git+https://github.com/Matt-Tav/arduino-spark2.git"
     },
-      "framework-arduino-avr": {
-      "type": "framework",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~5.2.0"
-    },
-      "framework-arduino-avr-minicore": {
-      "type": "framework",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~3.0.2"
-    },
       "tool-avrdude": {
       "type": "uploader",
       "optional": true,
       "owner": "platformio",
       "version": "~1.60300.0",
       "optionalVersions": ["~1.70200.0"]
-    },
-    "tool-simavr": {
-      "type": "debugger",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~1.10700.0"
     }
   }
 }
