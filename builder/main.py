@@ -32,7 +32,8 @@ def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
     upload_options = {}
     if "BOARD" in env:
         upload_options = env.BoardConfig().get("upload", {})
-
+        print(upload_options)
+    
     # Deprecated: compatibility with old projects. Use `program` instead
     if "usb" in env.subst("$UPLOAD_PROTOCOL"):
         upload_options["require_upload_port"] = False
@@ -51,21 +52,35 @@ def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
     if upload_options and not upload_options.get("require_upload_port", False):
         return
 
-    env.AutodetectUploadPort()
-    env.Append(UPLOADERFLAGS=["-P", "$UPLOAD_PORT"])
 
-    if not upload_options.get("disable_flushing", False) and not env.get(
-        "UPLOAD_PORT", ""
-    ).startswith("net:"):
-        env.FlushSerialBuffer("$UPLOAD_PORT")
+    #env.AutodetectUploadPort()
+    #env.Append(UPLOADERFLAGS=["-P", "$UPLOAD_PORT"])
 
+    #if not upload_options.get("disable_flushing", False) and not env.get(
+    #    "UPLOAD_PORT", ""
+    #).startswith("net:"):
+    #    env.FlushSerialBuffer("$UPLOAD_PORT")
+
+    #before_ports = list_serial_ports()
+
+    #if upload_options.get("use_1200bps_touch", False):
+    #    env.TouchSerialPort("$UPLOAD_PORT", 1200)
+
+    #if upload_options.get("wait_for_upload_port", False):
+    #    env.Replace(UPLOAD_PORT=env.WaitForNewSerialPort(before_ports))
+
+    # Capture ports BEFORE reset
     before_ports = list_serial_ports()
 
+    env.AutodetectUploadPort()
+
     if upload_options.get("use_1200bps_touch", False):
-        env.TouchSerialPort("$UPLOAD_PORT", 1200)
+        env.TouchSerialPort(env.subst("$UPLOAD_PORT"), 1200)
 
     if upload_options.get("wait_for_upload_port", False):
         env.Replace(UPLOAD_PORT=env.WaitForNewSerialPort(before_ports))
+
+    env.Append(UPLOADERFLAGS=["-P", "$UPLOAD_PORT"])
 
 
 env = DefaultEnvironment()
