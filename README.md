@@ -6,7 +6,7 @@ A platformio platform definition for the Spark2 breakout board.
 <p align="center">
     <img src="./other/assets/install0.png" />
 </p>
-2. Add the url to this repository, `https://github.com/Matt-Tav/platform-spark2`
+2. Add the url to this repository, 'https://github.com/Matt-Tav/platform-spark2'
 <p align="center">
     <img src="./other/assets/install1.png" />
 </p>
